@@ -1,3 +1,5 @@
+require 'easy-sms'
+
 class InviteController < ApplicationController
   before_action :set_app_details
   before_action :check_disabled_text
@@ -51,6 +53,11 @@ class InviteController < ApplicationController
     end
 
     logger.info "Going to create a new tester: #{email} - #{first_name} #{last_name}"
+
+    # By default initializer will use the EASYSMS_URL config variable to configure the client instance.
+    client = EasySMS::Client.new
+    puts client.messages.create to: '+17144656287', body: 'Going to create a new tester: #{email} - #{first_name} #{last_name}' #=> {"body"=>"Hello from Easy SMS Add-on for Heroku.", "c_at"=>2016-01-25 13:58:38 UTC, "from"=>nil, "status"=>"pending", "to"=>"+19285506070", "uid"=>"56a62a0ebbf109000c000000"}
+    # The received SMS can be seen at: https://easy-sms-demo.herokuapp.com/ (demo application build with Sinatra and Easy SMS add-on and deployed to Heroku)
 
     begin
       login
